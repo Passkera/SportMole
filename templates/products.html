@@ -8,7 +8,7 @@
         {% if key == 'photo' %}
             <p><img src="{{value}}" width="250px" height="250px" alt="There should be image" class="photo"></p>
         {% elif key == 'name' %}
-            <h3 class="title_product" style="margin-left: 33%;"><a href={{url_for('product', id_product=row.id)}}>{{value}}</a></h3>
+            <h3 class="title_product" style="margin-left: 40%;"><a href={{url_for('product', id_product=row.id)}}>{{value}}</a></h3>
         {% elif key == 'price' %}
             <h4 class="price">{{key}}: {{value}}</h4>
         {% elif key == 'value' %}
