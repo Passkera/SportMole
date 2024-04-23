@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+{% for msg in get_flashed_messages() %}
+<h1 style="text-align: center; color: red">{{msg}}</h1>
+{% endfor %}
+<form action="{{url_for('registration')}}" method="post" class="form-login" id="registration">
+    <p><label>Login:</label><input type="text" name="login" value="" required /></p>
+    <p><label>Password:</label><input type="password" name="psw" value="" required /></p>
+    <p><label>Email:</label><input type="text" name="email" value="" required /></p>
+    <label class="form-login ">Permissions</label><input list="myvalue" name="role">
+        <datalist id="myvalue" list="values">
+            <option>User</option>
+            <option>Admin</option>
+        </datalist>
+    <p><input type="submit" value="Sign in"/></p>
+</form>
+
+
+{% endblock %}

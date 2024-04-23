@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title -%}
+    {% if title %}
+        <title>{{title}}</title>
+    {% else %}
+        <title>EraSport</title>
+    {% endif %}
+    {% endblock %}
+    {% block style -%}
+        <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}"/>
+    {% endblock %}
+</head>
+<body>
+    {% block content -%}
+        <ul class="mainmenu">
+                <li><a href="/">Main</a></li>
+                <li><a href="/store">Store</a></li>
+                <li><a href="{{url_for('profile', login=login)}}">Profile {{login}}</a></li>
+                {% if role == 'admin' %}
+                    <li><a href=/products>Products</a></li>
+                {% endif %}
+        </ul>
+        {% block page_title %}
+        <div class="title">
+            {{ title }}
+        </div>
+        {% endblock %}
+    <header class="main_block"><header>
+    {% endblock -%}
+
+
+</body>
+</html>

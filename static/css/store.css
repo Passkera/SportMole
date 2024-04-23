@@ -1,0 +1,50 @@
+@import url('style.css');
+
+body {
+    background-image: url("../pictures/bg-start.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100%;
+}
+
+.product {
+    background: #E4DFD2;
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 50px;
+    width: 330px;
+    margin: 2.5%;
+    display: inline-block;
+}
+
+
+.photo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.title_product {
+    color: black;
+    text-align: center;
+    display: inline;
+    margin-left: 25%;
+}
+
+.price {
+    display: inline;
+    margin-left: 25%;
+
+}
+
+.value {
+    display: inline;
+}
+
+.description {
+    text-align: center;
+    margin-left: 6%;
+}
+
+.product_info {
+
+}

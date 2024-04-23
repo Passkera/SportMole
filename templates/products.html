@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+{% for row in list_products %}
+<div class="product">
+    {% for key, value in row.items() %}
+        {% if key == 'photo' %}
+            <p><img src="{{value}}" width="250px" height="250px" alt="There should be image" class="photo"></p>
+        {% elif key == 'name' %}
+            <h3 class="title_product" style="margin-left: 33%;"><a href={{url_for('product', id_product=row.id)}}>{{value}}</a></h3>
+        {% elif key == 'price' %}
+            <h4 class="price">{{key}}: {{value}}</h4>
+        {% elif key == 'value' %}
+            <h4 class="value"> | {{value}} remain</h4>
+        {% elif key == 'description' %}
+            <p class="description">{{value}}</p>
+
+        {% endif %}
+    {% endfor %}
+</div>
+{% endfor %}
+
+<div class="action_product">
+    <div class="add_item">
+        <h1>Add item</h1>
+        <form action="{{url_for('products')}}" enctype=multipart/form-data method="post" class="form-add">
+            <p><label>Name: </label> <input type="text" name="name" value="" required />
+            <p><label>Price: </label> <input type="text" name="price" value="" required />
+            <p><label>Description: </label> <textarea name="description" required> </textarea>
+            <p><label>Value: </label> <input type="text" name="value" value="" required />
+            <p><label>Photo: </label> <input type=file name="file" required />
+            <p><input type="submit" value="Send"/>
+        </form>
+    </div>
+
+    <div class="del_item">
+        <h1>Delete item</h1>
+        <form action="{{url_for('products')}}" method="post" class="form-del">
+            <p><label>ID: </label> <input type="text" name="id" value="" required />
+            <p><input type="submit" value="Send"/>
+        </form>
+    </div>
+</div>
+{% endblock %}
