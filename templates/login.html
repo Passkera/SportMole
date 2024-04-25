@@ -8,6 +8,7 @@
 <form action="{{url_for('login')}}" method="post" class="form-login">
     <p><label>Login:</label><input type="text" name="login" value="" required /></p>
     <p><label>Password:</label><input type="password" name="psw" value="" required /></p>
-    <p><input type="submit" value="Sign in"/></p>
+    <p><input style="display: block; margin:auto;" type="submit" value="Sign in"/></p>
 </form>
+<div class="login"><a href="{{url_for('registration')}}">Registration</a></div>
 {% endblock %}

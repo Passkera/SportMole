@@ -168,7 +168,7 @@ def profile(login):
 
         # For ordered values products
         cursor.execute("select `product_id`, `value` from `cart`"
-                       "where `users_login` = 'paskera'")
+                       "where `users_login` = %s", login)
         value_product = cursor.fetchall()
     if request.method == 'POST':
         with connection.cursor() as cursor:
