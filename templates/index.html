@@ -2,5 +2,34 @@
 
 {% block content %}
 {{ super() }}
+<div class="search">
+    <form action="{{url_for('index')}}" method="post">
+        <button type="submit">Search</button>
+            <input type="text" name="search" value="" style="width: 30%;">
+    </form>
+</div>
 
+{% for msg in get_flashed_messages() %}
+        {% for row in msg %}
+            <div class="product">
+                {% for key, value in row.items() %}
+                    {% if key == 'photo' %}
+                        <p><img src="{{value}}" width="250px" height="250px" alt="There should be image" class="photo"></p>
+                    {% elif key == 'name' %}
+                        <h3 class="title_product"><a href={{url_for('product', id_product=row.id)}}>{{value}}</a></h3>
+                        <form action="{{url_for('store')}}" method="POST" class="in_cart">
+                            <button type="submit" value="{{row.id}}" name="id">In a cart</button>
+                        </form>
+                    {% elif key == 'price' %}
+                        <h4 class="price">{{key}}: {{value}}</h4>
+                    {% elif key == 'value' %}
+                        <h4 class="value"> | {{value}} remain</h4>
+                    {% elif key == 'description' %}
+                        <p class="description">{{value}}</p>
+
+                    {% endif %}
+                {% endfor %}
+            </div>
+    {% endfor %}
+{% endfor %}
 {% endblock %}

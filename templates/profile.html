@@ -29,7 +29,7 @@
 </div>
 {% endfor %}
 
-<button style="display: block; margin: auto;"><a href="{{url_for('index')}}">Purchase</a></button>
+<button style="display: block; margin: auto;"><a href="{{url_for('purchase', login=login)}}">Purchase</a></button>
 {% endblock %}
 
 

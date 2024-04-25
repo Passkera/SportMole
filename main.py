@@ -1,13 +1,16 @@
 from flask import Flask, render_template, url_for, request, flash, session, redirect, abort, g, send_from_directory
 import pymysql.cursors
 import os
+from datetime import datetime, date
+from config import host, user, password, database
+
 
 
 def connect_db():
-    connection = pymysql.connect(host='localhost',
-                                 user='Paskera',
-                                 password='912t2414',
-                                 database='sport',
+    connection = pymysql.connect(host=host,
+                                 user=user,
+                                 password=password,
+                                 database=database,
                                  cursorclass=pymysql.cursors.DictCursor)
     return connection
 
@@ -24,11 +27,19 @@ app.config['UPLOAD_FOLDER'] = "static/pictures/"
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 
 
-@app.route("/index")
-@app.route("/")
+@app.route("/index", methods=['POST', 'GET'])
+@app.route("/", methods=['POST', 'GET'])
 def index():
     if 'login' not in session:
         return redirect(url_for('login'))
+    if request.method == 'POST':
+        connection = get_db()
+        with connection.cursor() as cursor:
+            cursor.execute("select * from product where `name` like %s or `description` like %s ",
+                           ('%' + request.form['search'] + '%', '%' + request.form['search'] + '%'))
+            info = cursor.fetchall()
+            flash(info)
+
     return render_template('index.html', title='Main', role=session['role'], login=session['login'])
 
 
@@ -82,7 +93,7 @@ def registration():
             cursor.execute("insert into `users`(`login`, `password`, `email`, `role`)"
                            "values(%s, %s, %s, %s) ON DUPLICATE KEY update `login` = `login`",
                            (request.form['login'], request.form['psw'],
-                            request.form['email'], request.form['role']))
+                            request.form['email'], request.form['role'].lower()))
             connection.commit()
             return redirect(url_for('login'))
     return render_template('registration.html', title='Registration')
@@ -185,6 +196,24 @@ def profile(login):
             return redirect(url_for('profile', login=session['login']))
     return render_template('profile.html', title=f"Profile {login}", cart=cart,
                            role=session['role'], login=session['login'], value_product=value_product)
+
+
+@app.route("/profile/<login>/purchase", methods=['POST', 'GET'])
+def purchase(login):
+    if 'login' not in session:
+        return redirect(url_for('login'))
+    now = datetime.now()
+    connection = get_db()
+    with connection.cursor() as cursor:
+        cursor.execute("insert into `orders` (`users_login`, `product_id`, `value`, `data`, `time`)"
+                       "select `users_login`, `product_id`, `value`, %s, %s from `cart` where users_login = %s",
+                       (date.today(), f"{str(now.hour)}:{str(now.minute)}", session['login']))
+        connection.commit()
+
+        cursor.execute("delete from cart where `users_login` = %s", session['login'])
+        connection.commit()
+
+    return redirect(url_for('profile', login=session['login']))
 
 
 @app.errorhandler(404)

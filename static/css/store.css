@@ -7,16 +7,6 @@ body {
     background-size: 100%;
 }
 
-.product {
-    background: #E4DFD2;
-    background: rgba(255, 255, 255, 0.55);
-    border-radius: 50px;
-    width: 330px;
-    margin: 2.5%;
-    display: inline-block;
-}
-
-
 .photo {
     display: block;
     margin-left: auto;
@@ -30,10 +20,13 @@ body {
     margin-left: 25%;
 }
 
+.in_cart {
+    display: inline;
+}
+
 .price {
     display: inline;
     margin-left: 25%;
-
 }
 
 .value {
