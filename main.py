@@ -5,7 +5,6 @@ from datetime import datetime, date
 from config import host, user, password, database
 
 
-
 def connect_db():
     connection = pymysql.connect(host=host,
                                  user=user,
@@ -121,8 +120,8 @@ def store():
 
 @app.route("/products", methods=['POST', 'GET'])
 def products():
-    if 'login' not in session:
-        return redirect(url_for('login'))
+    if session['role'] != 'admin':
+        return redirect(url_for('index'))
     connection = get_db()
     with connection.cursor() as cursor:
         cursor.execute("select * from product;")
@@ -139,13 +138,6 @@ def products():
             connection.commit()
 
         return redirect(url_for('products'))
-
-    # if request.method == 'POST':
-    #     with connection.cursor() as cursor:
-    #         cursor.execute(f"insert into product(name, price) values ({request.form['name']}, {request.form['price']})")
-    #         connection.commit()
-    #
-    #     return render_template('products.html', title='Products', menu=get_menu(), cursor=list_products)
     return render_template('products.html', title='Products', list_products=list_products,
                            role=session['role'], login=session['login'])
 
@@ -214,6 +206,19 @@ def purchase(login):
         connection.commit()
 
     return redirect(url_for('profile', login=session['login']))
+
+
+@app.route("/products/delete", methods=['POST', 'GET'])
+def delete_product():
+    if session['role'] != 'admin':
+        redirect(url_for('index'))
+    if request.method == 'POST':
+        connection = get_db()
+        with connection.cursor() as cursor:
+            print(request.form['id'])
+            cursor.execute("delete from product where id = %s", request.form['id'])
+            connection.commit()
+    return redirect(url_for('products'))
 
 
 @app.errorhandler(404)

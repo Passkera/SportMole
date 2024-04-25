@@ -3,12 +3,15 @@
 {% block content %}
 {{ super() }}
 {% for row in list_products %}
-<div class="product">
+<div class="product" xmlns="http://www.w3.org/1999/html">
     {% for key, value in row.items() %}
         {% if key == 'photo' %}
             <p><img src="{{value}}" width="250px" height="250px" alt="There should be image" class="photo"></p>
         {% elif key == 'name' %}
-            <h3 class="title_product" style="display: block; margin: auto;"><a href={{url_for('product', id_product=row.id)}}>{{value}}</a></h3>
+            <h3 class="title_product"><a href={{url_for('product', id_product=row.id)}}>{{value}}</a></h3>
+            <form action="{{url_for('delete_product')}}" method="POST" class="in_cart">
+                <button style="color:red;" type="submit" value="{{row.id}}" name="id">DELETE</button>
+            </form><br/>
         {% elif key == 'price' %}
             <h4 class="price">{{key}}: {{value}}</h4>
         {% elif key == 'value' %}
@@ -30,14 +33,6 @@
             <p><label>Description: </label> <textarea name="description" required> </textarea>
             <p><label>Value: </label> <input type="text" name="value" value="" required />
             <p><label>Photo: </label> <input type=file name="file" required />
-            <p><input type="submit" value="Send"/>
-        </form>
-    </div>
-
-    <div class="del_item">
-        <h1>Delete item</h1>
-        <form action="{{url_for('products')}}" method="post" class="form-del">
-            <p><label>ID: </label> <input type="text" name="id" value="" required />
             <p><input type="submit" value="Send"/>
         </form>
     </div>
