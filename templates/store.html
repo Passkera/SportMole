@@ -15,7 +15,7 @@
         {% elif key == 'name' %}
             <h3 class="title_product"><a href={{url_for('product', id_product=row.id)}}>{{value}}</a></h3>
             <form action="{{url_for('store')}}" method="POST" class="in_cart">
-                <button type="submit" value="{{row.id}}" name="id">In a cart</button>
+                <button type="submit" value="{{row.id}}" name="id" style="color: green;">In cart</button>
             </form><br/>
         {% elif key == 'price' %}
             <h4 class="price">{{key}}: {{value}}</h4>

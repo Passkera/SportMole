@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{{ super() }}
+<div class="reports">
+    <form action="{{url_for('reports')}}" method="post">
+        <button type="submit" name="report" value="1">Most ordered product</button>
+        <button type="submit" name="report" value="2">Info about users</button>
+        <button type="submit" name="report" value="3">Most count of one product</button>
+    </form>
+</div>
+
+{% for cat, msg in get_flashed_messages(True) %}
+    {% for row in msg %}
+        <div class="product">
+            <ul>
+            {% for key, value in row.items() %}
+                <li>{{key}} - {{value}}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+{% endfor %}
+{% endblock %}

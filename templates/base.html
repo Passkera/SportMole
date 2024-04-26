@@ -16,11 +16,12 @@
 <body>
     {% block content -%}
         <ul class="mainmenu">
-                <li><a href="/">Main</a></li>
-                <li><a href="/store">Store</a></li>
+                <li><a href="{{url_for('index')}}">Main</a></li>
+                <li><a href="{{url_for('store')}}">Store</a></li>
                 <li><a href="{{url_for('profile', login=login)}}">Profile {{login}}</a></li>
                 {% if role == 'admin' %}
-                    <li><a href=/products>Products</a></li>
+                    <li><a href="{{url_for('products')}}">Products</a></li>
+                    <li><a href="{{url_for('reports')}}">Reports</a></li>
                 {% endif %}
         </ul>
         {% block page_title %}

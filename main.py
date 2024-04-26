@@ -142,6 +142,37 @@ def products():
                            role=session['role'], login=session['login'])
 
 
+@app.route("/reports", methods=['POST', 'GET'])
+def reports():
+    if session['role'] != 'admin':
+        return redirect(url_for('index'))
+    if request.method == 'POST':
+        connection = get_db()
+        with connection.cursor() as cursor:
+            if request.form['report'] == '1':
+                cursor.execute("select `product_id`,count(`product_id`) as `count ordered`"
+                               "from `orders`"
+                               "group by `product_id`"
+                               "order by count(*) DESC")
+                msg = cursor.fetchall()
+                flash(msg, '1')
+
+            elif request.form['report'] == '2':
+                cursor.execute("select * from users")
+                msg = cursor.fetchall()
+                flash(msg, '2')
+
+            elif request.form['report'] == '3':
+                cursor.execute("select `product_id`, max(`value`) as `count value`"
+                               "from `orders`"
+                               "group by `product_id`"
+                               "order by max(value) DESC")
+                msg = cursor.fetchall()
+                flash(msg, '3')
+        return redirect(url_for('reports'))
+    return render_template('reports.html', title='Reports',
+                           role=session['role'], login=session['login'])
+
 @app.route("/product/<int:id_product>")
 def product(id_product):
     if 'login' not in session:
@@ -215,7 +246,6 @@ def delete_product():
     if request.method == 'POST':
         connection = get_db()
         with connection.cursor() as cursor:
-            print(request.form['id'])
             cursor.execute("delete from product where id = %s", request.form['id'])
             connection.commit()
     return redirect(url_for('products'))

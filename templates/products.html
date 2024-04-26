@@ -3,7 +3,7 @@
 {% block content %}
 {{ super() }}
 {% for row in list_products %}
-<div class="product" xmlns="http://www.w3.org/1999/html">
+<div class="product">
     {% for key, value in row.items() %}
         {% if key == 'photo' %}
             <p><img src="{{value}}" width="250px" height="250px" alt="There should be image" class="photo"></p>
